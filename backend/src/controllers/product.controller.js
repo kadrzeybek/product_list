@@ -12,9 +12,9 @@ export const getAllProduct = async (req, res) =>{
 
         //read and parse json data
         const datas = await fsp.readFile(filePath, "utf-8");
-        const product = JSON.parse(datas);
+        const products = JSON.parse(datas);
 
-        res.status(200).json(product);
+        res.status(200).json({success: true, data: products});
         
     } catch (error) {
         console.error("Error is in getAllProduct controller error", error)
