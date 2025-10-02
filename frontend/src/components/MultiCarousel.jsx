@@ -4,8 +4,8 @@ import useEmblaCarousel from "embla-carousel-react";
 
 const COLORS = {
   yellow: "#E6CA97",
-  rose: "#D9D9D9",
-  white: "#E1A4A9",
+  rose: "#E1A4A9",
+  white: "#D9D9D9"
   };
 
   function ColorDot({ colorKey, selected, onClick }) {
@@ -65,7 +65,7 @@ const COLORS = {
                   className="absolute inset-0 overflow-hidden"
                   style={{ width: fillPct }}
                 >
-                  <Star filled={true} className="text-yellow-500" />
+                  <Star filled={true} className="text-[#f6d5a8]" />
                 </span>
               </span>
             );
@@ -137,9 +137,9 @@ export default function MultiCarousel( { slides = [] } ) {
         <p className="mt-2 font-avenir text-[12px] capitalize">
           {colorKey} gold
         </p>
-        <div>
+        <div className="flex gap-3 mt-2">
           <StarRating value={rating5} />
-          <span className="text-sm text-gray-700 tabular-nums">
+          <span className="text-sm text-gray-700 tabular-nums ">
           {rating5.toFixed(1)} / 5
           </span>
         </div>
@@ -153,7 +153,7 @@ export default function MultiCarousel( { slides = [] } ) {
       <button
         onClick={() => emblaApi && emblaApi.scrollPrev()}
         disabled={!canPrev}
-        className="absolute left-2 top-1/3 -translate-y-1/2 text-black rounded-full shadow p-2 disabled:opacity-40"
+        className="absolute left-2 top-1/3 -translate-y-1/2 text-black rounded-full text-[40px] font-thin p-2 disabled:opacity-40"
       >
         ‹
       </button>
@@ -162,7 +162,7 @@ export default function MultiCarousel( { slides = [] } ) {
       <button
         onClick={() => emblaApi && emblaApi.scrollNext()}
         disabled={!canNext}
-        className="absolute right-2 top-1/3 -translate-y-1/2 text-black rounded-full shadow p-2 disabled:opacity-40"
+        className="absolute right-2 top-1/3 -translate-y-1/2 text-black rounded-full font-thin text-[40px] p-2 disabled:opacity-40"
       >
         ›
       </button>
