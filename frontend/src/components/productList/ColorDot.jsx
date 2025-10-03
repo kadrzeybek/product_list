@@ -1,4 +1,0 @@
-import { COLORS } from "../../constans";
-
-
-    

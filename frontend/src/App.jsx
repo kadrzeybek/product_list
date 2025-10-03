@@ -1,12 +1,10 @@
 import { Route, Routes } from 'react-router-dom'
-import Header from './components/Header'
-import Products from './pages/products'
+import Products from './pages/ProductsPage'
+
+
 function App() {
-
-
   return (
     <div>
-      <Header />
       <Routes>
         <Route path='/' element={<Products />} />
       </Routes>

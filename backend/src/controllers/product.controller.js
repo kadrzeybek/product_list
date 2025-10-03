@@ -6,7 +6,7 @@ import { calcPrice } from '../utils/pricing.js'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
-export const getAllProduct = async (req, res) =>{
+export const getProducts = async (req, res) =>{
     try {
         // find where product.json
         const filePath = path.join(__dirname,"../data/products.json");
@@ -15,15 +15,21 @@ export const getAllProduct = async (req, res) =>{
         const rawDatas = await fsp.readFile(filePath, "utf-8");
         const datas = JSON.parse(rawDatas);
 
-        const products = datas.map((p) => {
-            const price = calcPrice(p);
-            return {
-              ...p,                  
-              price,                     
-            };
-          });
+        const {minPrice, maxPrice, minPopularity} = req.query
 
-        res.status(200).json({success: true, data: products});
+        const products = datas.map(p => ({
+          ...p,
+          price: calcPrice(p)
+        }));
+    
+        const filtered = products.filter(p => {
+          if (minPrice && p.price < Number(minPrice)) return false;
+          if (maxPrice && p.price > Number(maxPrice)) return false;
+          if ((minPopularity) && p.popularityScore < Number(minPopularity)*0.2) return false;
+          return true;
+        });
+    
+        res.status(200).json({success: true, data: filtered, minPrice:minPrice, maxPrice:maxPrice});
         
     } catch (error) {
         console.error("Error is in getAllProduct controller error", error)

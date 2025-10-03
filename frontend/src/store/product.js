@@ -2,11 +2,32 @@ import { create } from 'zustand';
 
 export const useProductStore = create((set) =>({
     products: [],
-    setProducts: (products) => ({ products }),
-    fetchProducts: async () => {
-        const res = await fetch('/api/products')
-        const data = await res.json()
-        set({ products: data.data })
-        console.log(data.data)
+    minPrice: "",
+    maxPrice: "",
+    minPopularity: "",
+    loading: false,
+    setProducts: (products) => ( {products} ),
+    setMinPrice: (minPrice) => set({ minPrice }),
+    setMaxPrice: (maxPrice) => set({ maxPrice }),
+    setMinPopularity: (minPopularity) => set({ minPopularity }),
+
+    fetchProducts: async (filters = {}) => {
+      set({loading: true})
+      const qs = new URLSearchParams();
+      Object.entries(filters).forEach(([k, v]) => {
+        
+      if (v !== undefined && v !== null && v !== "") {
+          qs.set(k, v);
+        }
+      });
+
+      const url = qs.toString() 
+        ? `/api/products?${qs.toString()}` 
+        : `/api/products`;
+
+      const res = await fetch(url);
+      const data = await res.json()
+      
+      set({ products: data.data, loading:false })
       },
 }))

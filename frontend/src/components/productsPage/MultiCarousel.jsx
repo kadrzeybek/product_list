@@ -1,46 +1,24 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 import useEmblaCarousel from "embla-carousel-react";
-import Star from "./productList/Star";
-import { COLORS } from "../constants/index";
+import {StarRating} from "./Star";
+import { COLORS } from "../../constants/index";
 
 function ColorDot ({ colorKey, selected, onClick }) {
   return (
-  <button
-  type="button"
-  onClick={onClick}
-  className={`relative w-6 h-6 rounded-full ring-2 transition focus:outline-none focus:ring-blue-500 focus:ring-offset-2 ${
-  selected ? "ring-blue-500 ring-offset-2" : "ring-transparent"
-  }`}
-  >
-  <span
-  className="absolute inset-0 rounded-full"
-  style={{ backgroundColor: COLORS[colorKey] }} />
-  </button>
+    <button
+      type="button"
+      onClick={onClick}
+      className={`relative w-6 h-6 rounded-full ring-2 transition focus:outline-none focus:ring-blue-500 focus:ring-offset-2 ${
+      selected ? "ring-blue-500 ring-offset-2" : "ring-transparent"
+      }`}
+      >
+      <span
+      className="absolute inset-0 rounded-full"
+      style={{ backgroundColor: COLORS[colorKey] }} />
+    </button>
   );
   }
 
-function StarRating({ value = 0, max = 5 }) {
-  const clamped = Math.max(0, Math.min(max, value));
-    return (
-      <div className="flex items-center gap-1" >
-        {Array.from({ length: max }).map((_, i) => {
-          const fill = Math.max(0, Math.min(1, clamped - i));
-          const fillPct = `${fill * 100}%`;
-          return (
-            <span key={i} className="relative inline-block align-middle">
-              {/* Boş yıldız */}
-              <Star filled={false} className="text-gray-300" />
-    
-              {/* Dolu yıldız */}
-              <span className="absolute inset-0 overflow-hidden" style={{ width: fillPct }} >
-                  <Star filled={true} className="text-[#f6d5a8]" />
-              </span>
-             </span>
-          );
-        })}
-      </div>
-    );
-  }
     
 const MultiCarousel = ( { slides = [] } ) => {
 
@@ -50,35 +28,20 @@ const MultiCarousel = ( { slides = [] } ) => {
     setSelectedColors(slides.map(() => "yellow"));
   }, [slides]);
 
-
   const setColor = (index, colorKey) =>
   setSelectedColors((prev) => prev.map((v, i) => (i === index ? colorKey : v)));
 
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, align: "start" });
-  const [canPrev, setCanPrev] = useState(false);
-  const [canNext, setCanNext] = useState(false);
-
-  const onSelect = useCallback(() => {
-    if (!emblaApi) return;
-    setCanPrev(emblaApi.canScrollPrev());
-    setCanNext(emblaApi.canScrollNext());
-  }, [emblaApi]);
-
-  useEffect(() => {
-    if (!emblaApi) return;
-    onSelect();
-    emblaApi.on("select", onSelect);
-    emblaApi.on("reInit", onSelect);
-  }, [emblaApi, onSelect]);
 
   return (
-    <div className="relative w-full">
+    <div className="relative w-full mt-10">
       <div className="overflow-hidden" ref={emblaRef}>
-        <div className="flex">
+        <div className="flex ">
         {slides.map((product, idx) => {
           const colorKey = selectedColors[idx];
-          const rating5 = (product.popularityScore || 0) * 5; // 10 üzerinden 5'e indirgeme
+          const rating = (product.popularityScore) * 5; // Gelen rating 0-1 den 0-5'e çevrildi
           return (
+            
              <div key={product.name} className="flex-[0_0_100%] sm:flex-[0_0_50%] lg:flex-[0_0_33%] xl:flex-[0_0_25%] px-20">
               <div className="aspect-square bg-gray-100 rounded-lg">
                 <img src={product.images[colorKey]} alt={product.name} className="object-contain w-full h-full" loading="lazy"/>
@@ -102,9 +65,9 @@ const MultiCarousel = ( { slides = [] } ) => {
           {colorKey} gold
         </p>
         <div className="flex gap-3 mt-2">
-          <StarRating value={rating5} />
+          <StarRating value={rating} />
           <span className="text-sm text-gray-700 tabular-nums ">
-          {rating5.toFixed(1)} / 5
+          {rating.toFixed(1)}/5
           </span>
         </div>
       </div>
