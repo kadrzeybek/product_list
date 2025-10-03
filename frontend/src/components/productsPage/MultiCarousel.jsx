@@ -48,7 +48,9 @@ const MultiCarousel = ( { slides = [] } ) => {
               </div>
               <div className="mt-3 flex flex-col gap-1">
                 <h2 className="text-[15px] font-montserrat font-medium ">{product.name}</h2>
-                <p className="text-[15px] font-montserrat text-gray-500">${product.price.toFixed(2)} USD</p>
+                <p className="text-[15px] font-montserrat text-gray-500">
+                  ${Number(product.price || 0).toFixed(2)} USD
+                </p>
               </div>
               <div className="flex gap-2 mt-2">
                 {Object.keys(product.images).map((c) => (

@@ -1,7 +1,7 @@
 import { promises as fsp } from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { calcPrice } from '../utils/pricing.js'
+import { calcPrice,getGoldPrice } from '../utils/pricing.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -17,10 +17,13 @@ export const getProducts = async (req, res) =>{
 
         const {minPrice, maxPrice, minPopularity} = req.query
 
-        const products = datas.map(p => ({
-          ...p,
-          price: calcPrice(p)
-        }));
+        const gold_price = await getGoldPrice()
+        const products = await Promise.all(
+          datas.map(async (p) => ({
+            ...p,
+            price: await calcPrice(p,gold_price), // <-- önemli
+          }))
+        );
     
         const filtered = products.filter(p => {
           if (minPrice && p.price < Number(minPrice)) return false;
