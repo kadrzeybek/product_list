@@ -1,84 +1,48 @@
 import { useEffect, useState, useCallback } from "react";
 import useEmblaCarousel from "embla-carousel-react";
+import Star from "./productList/Star";
+import { COLORS } from "../constants/index";
 
+function ColorDot ({ colorKey, selected, onClick }) {
+  return (
+  <button
+  type="button"
+  onClick={onClick}
+  className={`relative w-6 h-6 rounded-full ring-2 transition focus:outline-none focus:ring-blue-500 focus:ring-offset-2 ${
+  selected ? "ring-blue-500 ring-offset-2" : "ring-transparent"
+  }`}
+  >
+  <span
+  className="absolute inset-0 rounded-full"
+  style={{ backgroundColor: COLORS[colorKey] }} />
+  </button>
+  );
+  }
 
-const COLORS = {
-  yellow: "#E6CA97",
-  rose: "#E1A4A9",
-  white: "#D9D9D9"
-  };
-
-  function ColorDot({ colorKey, selected, onClick }) {
+function StarRating({ value = 0, max = 5 }) {
+  const clamped = Math.max(0, Math.min(max, value));
     return (
-    <button
-    type="button"
-    onClick={onClick}
-    className={`relative w-6 h-6 rounded-full ring-2 transition focus:outline-none focus:ring-blue-500 focus:ring-offset-2 ${
-    selected ? "ring-blue-500 ring-offset-2" : "ring-transparent"
-    }`}
-    >
-    <span
-    className="absolute inset-0 rounded-full"
-    style={{ backgroundColor: COLORS[colorKey] }}
-    />
-    </button>
+      <div className="flex items-center gap-1" >
+        {Array.from({ length: max }).map((_, i) => {
+          const fill = Math.max(0, Math.min(1, clamped - i));
+          const fillPct = `${fill * 100}%`;
+          return (
+            <span key={i} className="relative inline-block align-middle">
+              {/* Boş yıldız */}
+              <Star filled={false} className="text-gray-300" />
     
-    );
-    }
-
-    // --- Star UI ---
-    function Star({ filled, className = "" }) {
-      return (
-        <svg
-          viewBox="0 0 24 24"
-          className={`block w-5 h-5 ${className}`}
-          fill={filled ? "currentColor" : "none"}
-          stroke="currentColor"
-          strokeWidth="2"
-          aria-hidden="true"
-        >
-          <path d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.787 1.401 8.166L12 18.897l-7.335 3.866 1.401-8.166L.132 9.21l8.2-1.192z" />
-        </svg>
-      );
-    }
-    
-    export function StarRating({ value = 0, max = 5 }) {
-      const clamped = Math.max(0, Math.min(max, value));
-    
-      return (
-        <div
-          className="inline-flex items-center gap-1 leading-none"
-          aria-label={`${clamped.toFixed(1)} / ${max} yıldız`}
-        >
-          {Array.from({ length: max }).map((_, i) => {
-            // Bu yıldızın doluluk oranı: 0..1
-            const fill = Math.max(0, Math.min(1, clamped - i));
-            const fillPct = `${fill * 100}%`;
-    
-            return (
-              <span key={i} className="relative inline-block align-middle">
-                {/* Boş yıldız (gri kontur) */}
-                <Star filled={false} className="text-gray-300" />
-    
-                {/* Dolu yıldız üst katmanı (sadece gereken yüzde kadar görünür) */}
-                <span
-                  className="absolute inset-0 overflow-hidden"
-                  style={{ width: fillPct }}
-                >
+              {/* Dolu yıldız */}
+              <span className="absolute inset-0 overflow-hidden" style={{ width: fillPct }} >
                   <Star filled={true} className="text-[#f6d5a8]" />
-                </span>
               </span>
-            );
-          })}
-        </div>
-      );
-    }
+             </span>
+          );
+        })}
+      </div>
+    );
+  }
     
-
-
-
-
-export default function MultiCarousel( { slides = [] } ) {
+const MultiCarousel = ( { slides = [] } ) => {
 
   const [selectedColors, setSelectedColors] = useState(() => slides.map(() => "yellow"));
 
@@ -121,7 +85,7 @@ export default function MultiCarousel( { slides = [] } ) {
               </div>
               <div className="mt-3 flex flex-col gap-1">
                 <h2 className="text-[15px] font-montserrat font-medium ">{product.name}</h2>
-                <p className="text-[15px] font-montserrat text-gray-500">$19.99 USD</p>
+                <p className="text-[15px] font-montserrat text-gray-500">${product.price.toFixed(2)} USD</p>
               </div>
               <div className="flex gap-2 mt-2">
                 {Object.keys(product.images).map((c) => (
@@ -150,22 +114,16 @@ export default function MultiCarousel( { slides = [] } ) {
       </div>
 
       {/* Prev button */}
-      <button
-        onClick={() => emblaApi && emblaApi.scrollPrev()}
-        disabled={!canPrev}
-        className="absolute left-2 top-1/3 -translate-y-1/2 text-black rounded-full text-[40px] font-thin p-2 disabled:opacity-40"
-      >
+      <button onClick={() => emblaApi && emblaApi.scrollPrev()} className="absolute left-2 top-1/3 -translate-y-1/2 text-black rounded-full text-[40px] font-thin p-2">
         ‹
       </button>
 
       {/* Next button */}
-      <button
-        onClick={() => emblaApi && emblaApi.scrollNext()}
-        disabled={!canNext}
-        className="absolute right-2 top-1/3 -translate-y-1/2 text-black rounded-full font-thin text-[40px] p-2 disabled:opacity-40"
-      >
+      <button onClick={() => emblaApi && emblaApi.scrollNext()} className="absolute right-2 top-1/3 -translate-y-1/2 text-black rounded-full font-thin text-[40px] p-2">
         ›
       </button>
     </div>
   );
 }
+
+export default MultiCarousel

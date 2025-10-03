@@ -7,5 +7,6 @@ export const useProductStore = create((set) =>({
         const res = await fetch('/api/products')
         const data = await res.json()
         set({ products: data.data })
+        console.log(data.data)
       },
 }))
