@@ -37,44 +37,48 @@ const MultiCarousel = ( { slides = [] } ) => {
     <div className="relative w-full mt-10">
       <div className="overflow-hidden" ref={emblaRef}>
         <div className="flex ">
-        {slides.map((product, idx) => {
-          const colorKey = selectedColors[idx];
-          const rating = (product.popularityScore) * 5; // Gelen rating 0-1 den 0-5'e çevrildi
-          return (
-            
-             <div key={product.name} className="flex-[0_0_100%] sm:flex-[0_0_50%] lg:flex-[0_0_33%] xl:flex-[0_0_25%] px-20">
-              <div className="aspect-square bg-gray-100 rounded-lg">
-                <img src={product.images[colorKey]} alt={product.name} className="object-contain w-full h-full" loading="lazy"/>
-              </div>
-              <div className="mt-3 flex flex-col gap-1">
-                <h2 className="text-[15px] font-montserrat font-medium ">{product.name}</h2>
-                <p className="text-[15px] font-montserrat text-gray-500">
-                  ${Number(product.price || 0).toFixed(2)} USD
+          {slides.map((product, idx) => {
+            const colorKey = selectedColors[idx];
+            const rating = (product.popularityScore) * 5; // rating change 0-5 scale from 0-1 scale
+            return (
+              // caursel item
+              <div key={product.name} className="flex-[0_0_100%] sm:flex-[0_0_50%] lg:flex-[0_0_33%] xl:flex-[0_0_25%] px-20">
+                {/*cart images*/}
+                <div className="aspect-square bg-gray-100 rounded-lg">
+                  <img src={product.images[colorKey]} alt={product.name} className="object-contain w-full h-full" loading="lazy"/>
+                </div>
+                {/* product info */}
+                <div className="mt-3 flex flex-col gap-1">
+                  <h2 className="text-[15px] font-montserrat font-medium ">{product.name}</h2>
+                  <p className="text-[15px] font-montserrat font-normal text-gray-500">
+                    ${Number(product.price || 0).toFixed(2)} USD
+                  </p>
+                </div>
+                {/* color options */}
+                <div className="flex gap-2 mt-2">
+                  {Object.keys(product.images).map((c) => (
+                    <ColorDot
+                      key={c}
+                      colorKey={c}
+                      selected={c === colorKey}
+                      onClick={() => setColor(idx, c)}
+                    />
+                  ))}
+                </div>
+                {/* selected color name */}
+                <p className="mt-2 font-avenir text-[12px] capitalize">
+                  {colorKey} gold
                 </p>
+                {/* rating */}
+                <div className="flex gap-3 mt-2">
+                  <StarRating value={rating} />
+                  <span className="text-sm text-gray-700 tabular-nums ">
+                    {rating.toFixed(1)}/5
+                  </span>
+                </div>
               </div>
-              <div className="flex gap-2 mt-2">
-                {Object.keys(product.images).map((c) => (
-                  <ColorDot
-                    key={c}
-                    colorKey={c}
-                    selected={c === colorKey}
-                    onClick={() => setColor(idx, c)}
-                  />
-                ))}
-              </div>
-
-        <p className="mt-2 font-avenir text-[12px] capitalize">
-          {colorKey} gold
-        </p>
-        <div className="flex gap-3 mt-2">
-          <StarRating value={rating} />
-          <span className="text-sm text-gray-700 tabular-nums ">
-          {rating.toFixed(1)}/5
-          </span>
-        </div>
-      </div>
-    );
-  })}
+            );
+          })}
         </div>
       </div>
 

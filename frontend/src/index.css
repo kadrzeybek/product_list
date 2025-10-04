@@ -4,21 +4,23 @@
 
 @font-face {
     font-family: 'AvenirBook';
-    src: url('/fonts/avenir/Avenir-Book.ttf') format('truetype');
+    src: url('/fonts/avenir/Avenir-Book.ttf') format('opentype');
     font-weight: 400;
     font-style: normal;
   }
   
-  @font-face {
-    font-family: 'MontserratRegular';
-    src: url('/fonts/montserat/Montserrat-Regular.ttf') format('truetype');
-    font-weight: 400;
-    font-style: normal;
-  }
-  
-  @font-face {
-    font-family: 'MontserratMedium';
-    src: url('/fonts/montserat/Montserrat-Medium.otf') format('truetype');
-    font-weight: 500;
-    font-style: normal;
-  }
+/* Montserrat Regular */
+@font-face {
+  font-family: 'Montserrat';
+  src: url('/fonts/montserat/Montserrat-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+/* Montserrat Medium */
+@font-face {
+  font-family: 'Montserrat';
+  src: url('/fonts/montserat/Montserrat-Medium.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+}

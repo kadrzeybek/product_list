@@ -23,10 +23,10 @@ export function StarRating({ value = 0, max = 5 }) {
           const fillPct = `${fill * 100}%`;
           return (
             <span key={i} className="relative inline-block align-middle">
-              {/* Boş yıldız */}
+              {/* empty start */}
               <Star filled={false} className="text-gray-300" />
     
-              {/* Dolu yıldız */}
+              {/* full start */}
               <span className="absolute inset-0 overflow-hidden" style={{ width: fillPct }} >
                   <Star filled={true} className="text-[#f6d5a8]" />
               </span>

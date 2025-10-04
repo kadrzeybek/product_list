@@ -6,7 +6,6 @@ export const useProductStore = create((set) =>({
     maxPrice: "",
     minPopularity: "",
     loading: false,
-    setProducts: (products) => ( {products} ),
     setMinPrice: (minPrice) => set({ minPrice }),
     setMaxPrice: (maxPrice) => set({ maxPrice }),
     setMinPopularity: (minPopularity) => set({ minPopularity }),

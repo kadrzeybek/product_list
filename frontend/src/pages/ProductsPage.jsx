@@ -5,9 +5,7 @@ import FilterPanel from "../components/productsPage/FilterPanel";
 
 import { useEffect } from "react";
 
-
 const Products = () => {
-
 
   const {fetchProducts, products, loading} = useProductStore();
 
@@ -15,20 +13,20 @@ const Products = () => {
     fetchProducts()
   },[fetchProducts])
 
-
   return (
-    <div className=" mt-10 mx-10">
+    <div className="mt-10 mx-10">
       <Header />
       <FilterPanel />
       {loading ? (
+        // Loading Spinner 
         <div className="flex justify-center items-center h-96">
           <div className="animate-spin rounded-full h-12 w-12 border-4 border-black border-t-transparent"></div>
-          {/* basit spinner */}
         </div>
       ) : products.length === 0 ? (
+        // No Products Found
         <div className="flex flex-col items-center justify-center h-96">
           <img src="/notFound.jpg" alt="Not Found" className="w-48 h-48 object-contain" />
-          <p className="text-gray-500 mt-4">Ürün bulunamadı</p>
+          <p className="text-gray-500 mt-4">Product Not Found</p>
         </div>
       ) : (
         <MultiCarousel slides={products} />

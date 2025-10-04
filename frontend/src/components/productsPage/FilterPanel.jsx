@@ -2,14 +2,10 @@
 import { OPTIONS } from "../../constants";
 import { useProductStore } from "../../store/product";
 
-const FilterPanel = ({
-  valueStars
-}) => {
+const FilterPanel = () => {
 
+  const {fetchProducts,minPrice, maxPrice, minPopularity, setMinPrice, setMaxPrice, setMinPopularity} = useProductStore();
 
-   const {fetchProducts,minPrice, maxPrice, minPopularity, setMinPrice, setMaxPrice, setMinPopularity} = useProductStore();
-
-  
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -30,11 +26,9 @@ const FilterPanel = ({
 
   return (
     <form onSubmit={handleSubmit} className="flex md:flex-row md:justify-end flex-col justify-center gap-3 p-3 px-20">
-      
 
-      {/* Min fiyat */}
+      {/* Min Price */}
       <div className="flex items-center">
-        
         <input
           placeholder="Min Price"
           type="number"
@@ -45,9 +39,8 @@ const FilterPanel = ({
         />
       </div>
 
-      {/* Max fiyat */}
+      {/* Max Price */}
       <div className="flex items-center gap-2">
-        
         <input
           placeholder="Max Price"
           type="number"
@@ -57,10 +50,10 @@ const FilterPanel = ({
           min="0"
         />
       </div>
-      {/* Yıldız seçimi */}
+
+      {/* Select Popularity */}
       <div className="flex items-center">
         <select
-          value={valueStars}
           onChange={(e) => setMinPopularity(e.target.value)}
           className="w-full md:w-56 rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-black/10"
         >
@@ -70,9 +63,9 @@ const FilterPanel = ({
           ))}
         </select>
       </div>
-
+      
+      {/* Apply Button */}
       <div>
-        {/* type="submit" -> onSubmit çalışır, preventDefault var */}
         <button type="submit" className="w-full md:w-auto px-3 py-2 rounded-lg bg-[#878b91] text-white">
           Apply
         </button>
