@@ -14,7 +14,7 @@ const Products = () => {
   },[fetchProducts])
 
   return (
-    <div className="mt-10 mx-10">
+    <div className=" mt-6 mb-10 md:mt-10 mx-10">
       <Header />
       <FilterPanel />
       {loading ? (
